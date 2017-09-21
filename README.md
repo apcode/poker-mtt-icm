@@ -1,5 +1,7 @@
 # Multitable Tournament ICM
 
+<< WIP - Still in development >>
+
 Independent Chip Models (ICM) are often used to calculate player
 equity for single table tournaments. This model calculates a player's
 equity by assuming that it is proportional to their chip stack
