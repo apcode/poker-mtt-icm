@@ -97,7 +97,7 @@ This calculation is:
 
 and for highest of X, total of Y and N players t looks like this:
 
-[diagram]
+![alt text](https://github.com/apcode/poker-mtt-icm/blob/master/doc/chip_stacks.png "Chip Stacks")
 
 So now with the chip stacks estimated for all players, we can now
 simulate the finishing positions for all players.
