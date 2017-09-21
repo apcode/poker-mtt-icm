@@ -37,7 +37,7 @@ class Tournament {
 
  private:
   // Worker to run in thread for RunN
-  Results RunNImpl(int n_trials);
+  Results RunNImpl(int n_trials, int thread);
 
   const int num_players_;
   const std::vector<double> prizes_;

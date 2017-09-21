@@ -65,8 +65,12 @@ void WriteEquity(std::ostream& os, const Tournament::Results& results) {
 
 int main(int argc, char* argv[]) {
 
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  CheckFlags();
+  FLAGS_highest_stack = 1000;
+  FLAGS_chips_in_play = 10000;
+  FLAGS_num_players = 10;
+  FLAGS_prizepool = 1.0;
+  FLAGS_tournament_type = "sng-10";
+  FLAGS_ntrials = 10;
 
   auto stacks =
       Stacks(FLAGS_highest_stack, FLAGS_chips_in_play, FLAGS_num_players);
@@ -87,7 +91,7 @@ int main(int argc, char* argv[]) {
             << FLAGS_finish_file << "\n\tequity in:\t" << FLAGS_equity_file
             << std::endl;
 
-  auto results = tournament.RunN(ntrials);
+  auto results = tournament.RunN(FLAGS_ntrials);
   std::ofstream finish(FLAGS_finish_file, std::ofstream::out);
   WriteFinishes(finish, results);
   finish.close();

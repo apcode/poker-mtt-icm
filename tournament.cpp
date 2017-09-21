@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <ctime>
+#include <iostream>
 #include <random>
 #include <future>
 
@@ -63,22 +64,22 @@ Tournament::Results Tournament::RunN(int n_trials) {
   if (n_trials < n_threads) {
     n_threads = 1;
   }
-  std::vector<std::future<Results>> workers;
-  for (int i(n_threads); i > 0; --i) {
-    int n = n_trials / n_threads;
+  auto trials_per_thread = n_trials / n_threads;
+  std::vector<std::future<Tournament::Results>> workers;
+  for (int i(n_threads), nt(n_trials); i > 0; --i, nt -= trials_per_thread) {
     if (i == 1) {
       // final thread, do remaining
-      n = n_trials;
+      trials_per_thread = nt;
     }
-    workers.emplace_back(
-        std::async(std::launch::async, [=]() { return RunNImpl(n); }));
-    n_trials -= n;
+    workers.emplace_back(std::async(
+        std::launch::async, [=]() { return RunNImpl(trials_per_thread, i); }));
   }
+
   // Merge results
   Results results(num_players_);
-  for (int i(n_threads); i > 0; --i) {
-    auto result = workers[i].get();
-    for (int p(0); p < num_players_; ++i) {
+  for (auto& w : workers) {
+    auto result = w.get();
+    for (int p(0); p < num_players_; ++p) {
       for (int f(0); f < num_players_; ++f) {
         results.finishes[p][f] += result.finishes[p][f];
       }
@@ -96,9 +97,10 @@ Tournament::Results Tournament::RunN(int n_trials) {
   return results;
 }
 
-Tournament::Results Tournament::RunNImpl(int n_trials) {
+Tournament::Results Tournament::RunNImpl(int n_trials, int thread) {
   Results results(num_players_);
   for (int t(0); t < n_trials; ++t) {
+    std::cout << thread << "-" << t << std::endl;
     const auto finishes = RunOne();
     // merge results
     for (int p(0); p < num_players_; ++p) {
