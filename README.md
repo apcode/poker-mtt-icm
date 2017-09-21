@@ -95,7 +95,7 @@ This calculation is:
 
     stack[i] = highest_stack * exp(-(i * num_players) / total_chips)
 
-and for highest of X, total of Y and N players t looks like this:
+and for highest of 3000, average of 1000 and 100 players it looks like this:
 
 ![alt text](https://github.com/apcode/poker-mtt-icm/blob/master/doc/chip_stacks.png "Chip Stacks")
 
