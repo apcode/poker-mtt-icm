@@ -9,13 +9,14 @@ class Tournament {
  public:
   struct Results {
     Results(int num_players)
-        : finishes(num_players, {num_players, 0}), equity(num_players, 0.0) {}
+        : finishes(num_players, std::vector<double>(num_players, 0)),
+          equity(num_players, 0.0) {}
     std::vector<std::vector<double>> finishes;
     std::vector<double> equity;
   };
 
   Tournament(const std::vector<double>& prizes, const std::vector<int>& stacks)
-      : num_players_(stacks_.size()), prizes_(prizes_), stacks_(stacks) {}
+      : num_players_(stacks.size()), prizes_(prizes), stacks_(stacks) {}
 
   // RunOne runs a tournament one time.
   // Return:
@@ -30,7 +31,7 @@ class Tournament {
   //     and total equity won in N tournaments.
   Results RunN(int n_trials);
 
-  const int NumPlayers() const { num_players_; }
+  const int NumPlayers() const { return num_players_; }
   const std::vector<double> Prizes() const { return prizes_; }
   const std::vector<int> StartingStacks() const { return stacks_; }
 

@@ -1,9 +1,10 @@
 #include "tournament.h"
 
 #include <algorithm>
+#include <cassert>
 #include <ctime>
 #include <random>
-#include <thread>
+#include <future>
 
 namespace poker {
 
@@ -57,8 +58,8 @@ std::vector<int> Tournament::RunOne() {
 }
 
 Tournament::Results Tournament::RunN(int n_trials) {
-  std::assert(n_trials > 0);
-  const auto n_threads = std::thread::hardware_concurrency();
+  assert(n_trials > 0);
+  auto n_threads = std::thread::hardware_concurrency();
   if (n_trials < n_threads) {
     n_threads = 1;
   }
@@ -70,7 +71,7 @@ Tournament::Results Tournament::RunN(int n_trials) {
       n = n_trials;
     }
     workers.emplace_back(
-        std::async(std::policy::async, [=]() { return RunNImpl(n); }));
+        std::async(std::launch::async, [=]() { return RunNImpl(n); }));
     n_trials -= n;
   }
   // Merge results
@@ -85,7 +86,7 @@ Tournament::Results Tournament::RunN(int n_trials) {
     }
   }
   // Normalise results by n_trials
-  for (int p(0); p < num_players_; ++i) {
+  for (int p(0); p < num_players_; ++p) {
     for (int f(0); f < num_players_; ++f) {
       results.finishes[p][f] /= n_trials;
     }
