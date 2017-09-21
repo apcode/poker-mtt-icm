@@ -7,11 +7,11 @@
 namespace poker {
 
 std::vector<int> Stacks(int highest, int chips, int num_players) {
-  double c = static_cast<double>(num_players) / chips;
   int n = 0;
   std::vector<int> players(num_players);
+  double c = static_cast<double>(num_players) / highest;
   std::generate(players.begin(), players.end(), [ highest, c, &n ]()->int {
-    auto stack = static_cast<int>(highest * std::exp(-(n++ * c)) + 0.5);
+    auto stack = static_cast<int>(chips * c * std::exp(-(n++ * c)) + 0.5);
     return std::max(stack, 1);
   });
   return players;
