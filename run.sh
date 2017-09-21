@@ -7,7 +7,7 @@
     --chips_in_play 10000 \
     --prizepool 100 \
     --tournament_type "sng-10" \
-    --ntrials 10000 \
+    --ntrials 10 \
     --finish_file "sng-10-finish.csv" \
     --equity_file "sng-10-equity.csv"
 
