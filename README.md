@@ -93,7 +93,8 @@ all players in the tournament.
 
 This calculation is:
 
-    stack[i] = highest_stack * exp(-(i * num_players) / total_chips)
+    C = num_players / highest_stack
+    stack[i] = total_chips * C * exp(-(i * num_players) * C)
 
 and for highest of 3000, average of 1000 and 100 players it looks like this:
 
